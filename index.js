@@ -2,7 +2,7 @@
  * @Author: paulinegaudet-chardonnet
  * @Date:   2016-07-26 16:29:10
  * @Last Modified by:   Pauline GC
- * @Last Modified time: 2016-07-29 11:15:08
+ * @Last Modified time: 2016-07-29 16:34:39
  */
 
 'use strict';
@@ -36,6 +36,7 @@ var app = {
         document.getElementById('stop').addEventListener('click', function() {
             self.mediaRecorder.stop();
             self.getMediaRecorded();
+            self.saveChart();
             self.detector.stop();
         });
 
@@ -78,6 +79,17 @@ var app = {
         } else {
             alert('getUserMedia() is not supported in your browser');
         }
+    },
+
+    saveChart: function() {
+
+        console.log('test', JSON.stringify(this.chart));
+        $.ajax({
+            type: "POST",
+            url: 'save_chart.php',
+            data: JSON.stringify(this.chart)
+        });
+
     },
 
     getMediaRecorded: function() {
@@ -247,5 +259,13 @@ var app = {
         };
 
         this.canvasChart.render();
+    },
+
+    archiveList: function() {
+
+    },
+
+    openArchive: function() {
+
     }
 };
