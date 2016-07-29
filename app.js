@@ -2,7 +2,7 @@
  * @Author: paulinegaudet-chardonnet
  * @Date:   2016-07-26 16:29:10
  * @Last Modified by:   Pauline GC
- * @Last Modified time: 2016-07-29 09:55:45
+ * @Last Modified time: 2016-07-29 11:15:08
  */
 
 'use strict';
@@ -15,6 +15,8 @@ var app = {
 
     init: function() {
         this.start = new Date();
+        this.timeCapture = null;
+        this.now = null;
         this.chunks = [];
         this.detector = null;
         this.nbExpressions = 21;
@@ -161,8 +163,7 @@ var app = {
     },
 
     canvasChartInit: function() {
-        var self = this,
-            timeMs;
+        var self = this;
         this.chart = [];
         this.dps = []; // dataPoints
         this.xVal;
@@ -187,26 +188,20 @@ var app = {
         this.canvasChart = new CanvasJS.Chart("chartContainer", {
             data: self.chart,
             colorSet: this.arrayColors,
+            zoomEnabled: true,
             title: {
                 text: "Live Emotions"
             },
             theme: "theme2",
             axisX: {
-                gridThickness: 2,
-                interval: 2,
-                intervalType: "hour",
-                valueFormatString: "hh TT K",
                 title: "Temps",
                 labelFormatter: function(e) {
-                    //return nb seconds past
-                    var now = new Date();
-                    timeMs = now.getTime() - self.start.getTime();
-                    // return ((timeMs / 1000) % 60).toFixed();
-                    return '';
+                    return ' ';
                 }
             },
             axisY: {
                 title: "Intensité",
+                tickLength: 10
             },
             legend: {
                 cursor: "pointer",
@@ -216,7 +211,6 @@ var app = {
                     } else {
                         e.dataSeries.visible = true;
                     }
-
                     e.chart.render();
                 }
             }
@@ -229,6 +223,8 @@ var app = {
     updateChart: function() {
         var count = count || 1;
         // count is number of times loop runs to generate random dataPoints.
+        this.now = +new Date();
+        this.timeCapture = ((this.now - this.start) / 1000) % 60;
 
         for (var j = 0; j < count; j++) {
 
@@ -237,12 +233,11 @@ var app = {
                 this.chart[i].yVal = this.expArray[i][this.expArray[i].length - 1].expValue;
 
                 this.chart[i].dataPoints.push({
-                    x: this.chart[i].xVal,
+                    x: this.timeCapture,
                     y: this.chart[i].yVal
                 });
 
-                this.chart[i].xVal += 1;
-
+                //to limit length of chart
                 // if (this.chart[i].dataPoints.length > this.dataLength) {
                 //     this.chart[i].dataPoints.shift();
                 // }
