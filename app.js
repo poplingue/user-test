@@ -1,8 +1,8 @@
 /*
  * @Author: paulinegaudet-chardonnet
  * @Date:   2016-07-26 16:29:10
- * @Last Modified by:   paulinegaudet-chardonnet
- * @Last Modified time: 2016-07-28 11:07:33
+ * @Last Modified by:   Pauline GC
+ * @Last Modified time: 2016-07-29 09:55:45
  */
 
 'use strict';
@@ -14,6 +14,7 @@
 var app = {
 
     init: function() {
+        this.start = new Date();
         this.chunks = [];
         this.detector = null;
         this.nbExpressions = 21;
@@ -141,8 +142,7 @@ var app = {
 
                 self.expArray[i].push({
                     expValue: faces[0].expressions[prop].toFixed ? Number(faces[0].expressions[prop].toFixed(0)) : faces[0].expressions[prop],
-                    expression: prop,
-                    color: this.arrayColors[i]
+                    expression: prop
                 });
 
                 //list expressions
@@ -161,7 +161,8 @@ var app = {
     },
 
     canvasChartInit: function() {
-        var self = this;
+        var self = this,
+            timeMs;
         this.chart = [];
         this.dps = []; // dataPoints
         this.xVal;
@@ -172,23 +173,41 @@ var app = {
 
             //config charts
             this.chart.push({
-                type: "line",
+                type: "splineArea", //scatter, splineArea
                 dataPoints: this.dps[i],
-                lineColor: this.arrayColors[i],
-                markerColor: this.arrayColors[i],
                 markerSize: 4,
                 showInLegend: true,
                 xVal: 0,
-                yVal: 0
+                yVal: 0,
+                visible: false
             });
         }
 
         //config canvas
         this.canvasChart = new CanvasJS.Chart("chartContainer", {
+            data: self.chart,
+            colorSet: this.arrayColors,
             title: {
                 text: "Live Emotions"
             },
-            data: self.chart,
+            theme: "theme2",
+            axisX: {
+                gridThickness: 2,
+                interval: 2,
+                intervalType: "hour",
+                valueFormatString: "hh TT K",
+                title: "Temps",
+                labelFormatter: function(e) {
+                    //return nb seconds past
+                    var now = new Date();
+                    timeMs = now.getTime() - self.start.getTime();
+                    // return ((timeMs / 1000) % 60).toFixed();
+                    return '';
+                }
+            },
+            axisY: {
+                title: "Intensité",
+            },
             legend: {
                 cursor: "pointer",
                 itemclick: function(e) {
