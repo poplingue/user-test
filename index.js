@@ -2,7 +2,7 @@
  * @Author: paulinegaudet-chardonnet
  * @Date:   2016-07-26 16:29:10
  * @Last Modified by:   Pauline GC
- * @Last Modified time: 2016-07-29 16:34:39
+ * @Last Modified time: 2016-07-30 17:57:43
  */
 
 'use strict';
@@ -21,6 +21,7 @@ var app = {
         this.detector = null;
         this.nbExpressions = 21;
         this.listExp = false;
+        this.first = true;
         var self = this;
 
         this.arrayColors = ['#7FFFD4', '#0000FF', '#8A2BE2', '#8B008B', '#A52A2A', '#00008B', '#DC143C', '#6495ED', '#006400', '#8FBC8F', '#00008B', '#B8860B', '#FF7F50', '#CD5C5C', '#20B2AA', '#00CED1', '#9400D3', '#008000', '#778899', '#00FA9A', '#6B8E23'];
@@ -31,6 +32,7 @@ var app = {
         document.getElementById('start').addEventListener('click', function() {
             self.detector.start();
             self.webcamRecorder();
+            document.getElementById('loader').className += 'visible';
         });
 
         document.getElementById('stop').addEventListener('click', function() {
@@ -82,14 +84,13 @@ var app = {
     },
 
     saveChart: function() {
-
-        console.log('test', JSON.stringify(this.chart));
         $.ajax({
             type: "POST",
+            dataType: 'json',
             url: 'save_chart.php',
+            contentType: "application/json",
             data: JSON.stringify(this.chart)
         });
-
     },
 
     getMediaRecorded: function() {
@@ -104,7 +105,7 @@ var app = {
         //update link to download video file
         downloadLink = document.getElementById('downloadLink');
         downloadLink.href = videoURL;
-        downloadLink.innerHTML = 'Download video file';
+        downloadLink.classList.remove('disabled');
 
         today = new Date();
         name = "video_" + today.getDate() + "_" + (parseInt(today.getMonth()) + 1) + "_" + today.getFullYear() + "_" + today.getHours() + "h" + today.getMinutes() + ".webm";
@@ -119,7 +120,7 @@ var app = {
 
     expressionCaptationInit: function() {
 
-        var divRoot = document.getElementById('affdex_elements');
+        var divRoot = document.getElementById('affdex_video');
         // The captured frame's width in pixels
         var width = 640;
         // The captured frame's height in pixels
@@ -202,7 +203,7 @@ var app = {
             colorSet: this.arrayColors,
             zoomEnabled: true,
             title: {
-                text: "Live Emotions"
+                text: "Live Expressions"
             },
             theme: "theme2",
             axisX: {
@@ -236,8 +237,8 @@ var app = {
         var count = count || 1;
         // count is number of times loop runs to generate random dataPoints.
         this.now = +new Date();
-        this.timeCapture = ((this.now - this.start) / 1000) % 60;
-
+        this.timeCapture = ((this.now - this.start) / 1000);
+        console.log('test', this.timeCapture);
         for (var j = 0; j < count; j++) {
 
             for (var i = 0; i < this.nbExpressions; i++) {
@@ -257,8 +258,12 @@ var app = {
             }
 
         };
-
         this.canvasChart.render();
+        if (this.first) {
+            document.getElementById('loader').classList.remove('visible');
+            document.getElementById('chartContainer').className += 'visible';
+            this.first = false;
+        }
     },
 
     archiveList: function() {

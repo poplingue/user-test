@@ -1,11 +1,15 @@
 <?php
 
-$post_data = $_POST['data'];
-$fi = new FilesystemIterator('output/chart/');
+$data = json_decode(file_get_contents("php://input"));
 
-$content = json_decode($post_data);
-$my_file = 'output/chart/chart_'.iterator_count($fi).'.json';
-$handle = fopen($my_file, 'w') or die('Cannot open file:  '.$my_file); //implicitly creates file
-fwrite($handle, $post_data);
+//count how much chart already created
+$fi = new FilesystemIterator('output/chart/');
+$filename = 'output/chart/chart_'.iterator_count($fi).'.json';
+
+$fp = fopen($filename,'w');
+fwrite($fp, json_encode($data));
+fclose($fp);
+
+var_dump($data);
 
 ?>

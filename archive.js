@@ -2,7 +2,7 @@
  * @Author: paulinegaudet-chardonnet
  * @Date:   2016-07-26 16:29:10
  * @Last Modified by:   Pauline GC
- * @Last Modified time: 2016-07-29 15:32:30
+ * @Last Modified time: 2016-07-30 18:13:43
  */
 
 'use strict';
@@ -34,9 +34,9 @@ var app = {
             url: 'count_list.php',
             success: function(nb) {
                 var list = document.getElementById('archive-list'),
-                    index = 0;
+                    index = 1;
                 for (var i = 0; i < nb; i++) {
-                    list.innerHTML += '<li><a href="#" class="chart" data-chart="' + index + '">Chart ' + index + '</a></li>';
+                    list.innerHTML += '<button type="button" class="list-group-item chart" data-chart="' + index + '">Chart ' + index + '</button>';
                     index++
                 }
             }
@@ -46,9 +46,12 @@ var app = {
     openArchive: function(e) {
         var targetChart = e.target.dataset.chart,
             divChart = document.getElementById('current-chart'),
-            self = this;
+            self = this,
+            prom;
 
-        var prom = new Promise(function(resolve, reject) {
+        // divChart.innerHTML = null;
+
+        prom = new Promise(function(resolve, reject) {
 
             $.ajax({
                 url: 'output/chart/chart_' + targetChart + '.json'
