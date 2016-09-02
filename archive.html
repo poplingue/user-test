@@ -2,44 +2,55 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <link rel="stylesheet" href="style/bootstrap.min.css">
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="style/bootstrap.min.css">
+	<link href="http://vjs.zencdn.net/5.11.6/video-js.css" rel="stylesheet">
+	<link rel="stylesheet" href="./style/style.css">
+	<style>
+		.video-js {
+			margin: 0 auto;
+		}
+	</style>
 </head>
 
 <body>
-  <nav>
-    <ul class="nav nav-tabs">
-      <li role="presentation"><a href="index.html">Expression record</a></li>
-      <li role="presentation" class="active"><a href="archive.html">Charts's archive</a></li>
-    </ul>
-  </nav>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-xs-12">
-        <div class="page-header">
-          <h1>User test</h1>
-          <h2>Charts's archives</h2>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-xs-12">
-        <div class="list-group" id='archive-list'></div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-xs-12">
-        <div id="current-chart"></div>
-      </div>
-    </div>
-  </div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-  <script type="text/javascript" src="lib/affdex.js"></script>
-  <script type="text/javascript" src="lib/canvasjs.min.js"></script>
-  <script type="text/javascript" src="archive.js"></script>
-  <script type="text/javascript">
-  app.init();
-  </script>
+	<nav>
+		<ul class="nav nav-tabs">
+			<li role="presentation"><a href="index.html">Expression record</a></li>
+			<li role="presentation" class="active"><a href="archive.html">Charts's archive</a></li>
+		</ul>
+	</nav>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="page-header">
+					<h1>User test</h1>
+					<h2>Charts's archives</h2>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="list-group" id='archive-list'></div>
+			</div>
+		</div>
+		<div class="row text-center">
+			<video id='video'></video>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<div id="current-chart"></div>
+			</div>
+		</div>
+	</div>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+	<script type="text/javascript" src="lib/affdex.js"></script>
+	<script type="text/javascript" src="lib/canvasjs.min.js"></script>
+	<script src="http://vjs.zencdn.net/5.11.6/video.js"></script>
+	<script type="text/javascript" src="archive.js"></script>
+	<script type="text/javascript">
+		app.init();
+	</script>
 </body>
 
 </html>
